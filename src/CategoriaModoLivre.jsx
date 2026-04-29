@@ -6,20 +6,22 @@ export default function CategoriaModoLivre({
   return (
   <section
   id={id}
-  className="pl-40 pr-6 max-w-7xl pt-20"
+  className="px-6 lg:pl-80 lg:pr-8 pt-28 pb-12"
 >
 
-      {/* Título da seção */}
-      <h3 className="text-left font-bold text-gray-900 mb-6">
+      <h3 className="text-3xl font-bold text-gray-800 mb-8 pb-3 border-b-4 border-blue-200">
         {tituloSecao}
       </h3>
 
-      {/* Grid de cards */}
-      <div className="grid grid-cols-4 gap-8">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {categorias.map((item, index) => (
-          <div key={index}>
-            <h4 className="sr-only">{item.titulo}</h4>
-            <img src={item.imagem} alt={item.titulo} className="block w-full h-auto object-countain"/>
+          <div key={index} className="bg-white rounded-2xl border-4 border-blue-150 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 overflow-hidden group cursor-pointer flex flex-col">
+            <div className="bg-gradient-to-br from-blue-100 to-green-100 p-4 flex-1 flex items-center justify-center">
+              <img src={item.imagem} alt={item.titulo} className="w-full h-full object-contain"/>
+            </div>
+            <div className="bg-green-50 px-4 py-3 border-t-2 border-green-200">
+              <h4 className="text-lg font-bold text-gray-800">{item.titulo}</h4>
+            </div>
           </div>
         ))}
       </div>

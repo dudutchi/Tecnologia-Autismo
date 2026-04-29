@@ -85,9 +85,8 @@ const MenuItems = [
 export default function ModoLivre() {
   return (
     <div className="overflow-x-hidden"> 
-      <FaixaDeModo texto="Modo Livre" cor="#58D68D" />
+      <FaixaDeModo texto="Ajude-me" cor="#58D68D" />
        <MenuLateralModoLivre items={MenuItems} />
-
 
       <CategoriaModoLivre
         id="comunicacao-geral"
