@@ -1,0 +1,22 @@
+info:
+  name: Atualizar Perfil
+  type: http
+  seq: 5
+
+http:
+  method: PUT
+  url: "{{baseUrl}}/users/profile"
+  body:
+    type: json
+    data: |-
+      {
+        "name": "Jean",
+        "email": "jeje@email.com"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

@@ -1,0 +1,25 @@
+info:
+  name: Criar Lembretes
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: "{{baseUrl}}/lembretes"
+  body:
+    type: json
+    data: |-
+      {
+        "title": "Ir para escola",
+        "description": "Ir para escola quando acordar",
+        "date": "2026-05-20",
+        "time": "14:00",
+        "status": "pendente"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

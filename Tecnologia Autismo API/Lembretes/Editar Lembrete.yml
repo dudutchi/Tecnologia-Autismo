@@ -1,0 +1,25 @@
+info:
+  name: Editar Lembrete
+  type: http
+  seq: 3
+
+http:
+  method: PUT
+  url: "{{baseUrl}}/lembretes/6a0740f6c875ca355e27bfb3"
+  body:
+    type: json
+    data: |-
+      {
+        "title": "Tomar remédio atualizado",
+        "description": "Tomar remédio com água",
+        "date": "2026-05-20",
+        "time": "15:00",
+        "status": "concluido"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
