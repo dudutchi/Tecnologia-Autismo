@@ -1,36 +1,36 @@
-import FaixaDeModo from "./FaixadeModo"
-import CategoriaModoLivre from "./CategoriaModoLivre";
-import MenuLateralModoLivre from "./MenuLateralModoLivre";
+import FaixaDeModo from "../components/FaixaDeModo"
+import CategoriaModoLivre from "../components/CategoriaModoLivre";
+import MenuLateralModoLivre from "../components/MenuLateralModoLivre";
 
-import acoes from "./pranchasModoLivre/ComunicacaoGeral/acoes.png";
-import interacao from "./pranchasModoLivre/ComunicacaoGeral/interacao.png";
-import pessoas from "./pranchasModoLivre/ComunicacaoGeral/pessoas.png";
-import soletrar from "./pranchasModoLivre/ComunicacaoGeral/soletrar.png";
-import palavras from "./pranchasModoLivre/ComunicacaoGeral/palavras-essenciais.png"
+import acoes from "../assets/pranchasModoLivre/ComunicacaoGeral/Acoes.png";
+import interacao from "../assets/pranchasModoLivre/ComunicacaoGeral/interacao.png";
+import pessoas from "../assets/pranchasModoLivre/ComunicacaoGeral/Pessoas.png";
+import soletrar from "../assets/pranchasModoLivre/ComunicacaoGeral/Soletrar.png";
+import palavras from "../assets/pranchasModoLivre/ComunicacaoGeral/palavras-essenciais.png"
 
-import ajudaEscola from "./pranchasModoLivre/Educacao/ajuda-na-escola.png"
-import alfabeto from "./pranchasModoLivre/Educacao/alfabeto.png"
-import animais from "./pranchasModoLivre/Educacao/animais.png"
-import espacosEscola from "./pranchasModoLivre/Educacao/espacos-da-escola.png"
-import numeros from "./pranchasModoLivre/Educacao/numeros.png"
+import ajudaEscola from "../assets/pranchasModoLivre/Educacao/ajuda-na-escola.png"
+import alfabeto from "../assets/pranchasModoLivre/Educacao/alfabeto.png"
+import animais from "../assets/pranchasModoLivre/Educacao/animais.png"
+import espacosEscola from "../assets/pranchasModoLivre/Educacao/espacos-da-escola.png"
+import numeros from "../assets/pranchasModoLivre/Educacao/numeros.png"
 
-import bebidas from "./pranchasModoLivre/Alimentacao/bebidas.png"
-import comidas from "./pranchasModoLivre/Alimentacao/comidas.png"
-import frutas from "./pranchasModoLivre/Alimentacao/frutas.png"
-import refeicoes from "./pranchasModoLivre/Alimentacao/refeicoes.png"
-import vegetais from "./pranchasModoLivre/Alimentacao/vegetais.png"
+import bebidas from "../assets/pranchasModoLivre/Alimentacao/bebidas.png"
+import comidas from "../assets/pranchasModoLivre/Alimentacao/comidas.png"
+import frutas from "../assets/pranchasModoLivre/Alimentacao/frutas.png"
+import refeicoes from "../assets/pranchasModoLivre/Alimentacao/refeicoes.png"
+import vegetais from "../assets/pranchasModoLivre/Alimentacao/vegetais.png"
 
-import nivelDor from "./pranchasModoLivre/CorpoSaude/nivel-de-dor.png"
-import partesCorpo from "./pranchasModoLivre/CorpoSaude/partes-do-corpo.png"
-import profissionaisSaude from "./pranchasModoLivre/CorpoSaude/profissionais-da-saude.png"
-import saude from "./pranchasModoLivre/CorpoSaude/saude.png"
-import sensacoes from "./pranchasModoLivre/CorpoSaude/sensacoes.png"
+import nivelDor from "../assets/pranchasModoLivre/CorpoSaude/nivel-de-dor.png"
+import partesCorpo from "../assets/pranchasModoLivre/CorpoSaude/partes-do-corpo.png"
+import profissionaisSaude from "../assets/pranchasModoLivre/CorpoSaude/profissionais-da-saude.png"
+import saude from "../assets/pranchasModoLivre/CorpoSaude/saude.png"
+import sensacoes from "../assets/pranchasModoLivre/CorpoSaude/sensacoes.png"
 
-import banheiro from "./pranchasModoLivre/Lugares/banheiro.png"
-import cozinha from "./pranchasModoLivre/Lugares/cozinha.png"
-import estabelecimentos from "./pranchasModoLivre/Lugares/estabelecimentos.png"
-import quarto from "./pranchasModoLivre/Lugares/quarto.png"
-import sala from "./pranchasModoLivre/Lugares/sala.png"
+import banheiro from "../assets/pranchasModoLivre/Lugares/banheiro.png"
+import cozinha from "../assets/pranchasModoLivre/Lugares/cozinha.png"
+import estabelecimentos from "../assets/pranchasModoLivre/Lugares/estabelecimentos.png"
+import quarto from "../assets/pranchasModoLivre/Lugares/quarto.png"
+import sala from "../assets/pranchasModoLivre/Lugares/sala.png"
 
 
 const ComunicacaoGeral = [
