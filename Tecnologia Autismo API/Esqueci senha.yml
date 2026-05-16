@@ -1,0 +1,21 @@
+info:
+  name: Esqueci senha
+  type: http
+  seq: 8
+
+http:
+  method: POST
+  url: "{{baseUrl}}/auth/forgot-password"
+  body:
+    type: json
+    data: |-
+      {
+        "email": "jeje@email.com"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

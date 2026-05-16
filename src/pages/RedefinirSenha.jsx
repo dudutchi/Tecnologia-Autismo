@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../contexts/AuthContext";
+import { Link, useParams } from "react-router-dom";
+import api from "../services/api";
+
 function EyeIcon() {
   return (
     <svg
@@ -55,13 +56,10 @@ function EyeOffIcon() {
   );
 }
 
-export default function Cadastro() {
-  const navigate = useNavigate();
-  const { register } = useAuth();
+export default function RedefinirSenha() {
+  const { token } = useParams();
 
   const [form, setForm] = useState({
-    name: "",
-    email: "",
     password: "",
     confirmPassword: ""
   });
@@ -69,6 +67,7 @@ export default function Cadastro() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
+  const [message, setMessage] = useState("");
   const [error, setError] = useState("");
 
   function handleChange(event) {
@@ -80,6 +79,8 @@ export default function Cadastro() {
 
   async function handleSubmit(event) {
     event.preventDefault();
+
+    setMessage("");
     setError("");
 
     if (form.password !== form.confirmPassword) {
@@ -88,10 +89,20 @@ export default function Cadastro() {
     }
 
     try {
-      await register(form.name, form.email, form.password);
-      navigate("/");
+      const response = await api.post(`/auth/reset-password/${token}`, {
+        password: form.password
+      });
+
+      setMessage(response.data.message);
+
+      setForm({
+        password: "",
+        confirmPassword: ""
+      });
     } catch (error) {
-      setError(error.response?.data?.message || "Erro ao cadastrar");
+      setError(
+        error.response?.data?.message || "Erro ao redefinir senha"
+      );
     }
   }
 
@@ -101,9 +112,19 @@ export default function Cadastro() {
         onSubmit={handleSubmit}
         className="bg-white w-full max-w-md p-8 rounded-2xl shadow-lg"
       >
-        <h1 className="text-3xl font-bold text-gray-800 mb-6">
-          Criar conta
+        <h1 className="text-3xl font-bold text-gray-800 mb-4">
+          Criar nova senha
         </h1>
+
+        <p className="text-gray-600 mb-6">
+          Digite e confirme sua nova senha.
+        </p>
+
+        {message && (
+          <p className="bg-green-100 text-green-700 p-3 rounded-lg mb-4">
+            {message}
+          </p>
+        )}
 
         {error && (
           <p className="bg-red-100 text-red-700 p-3 rounded-lg mb-4">
@@ -111,26 +132,10 @@ export default function Cadastro() {
           </p>
         )}
 
-        <label className="block font-bold mb-2">Nome</label>
-        <input
-          name="name"
-          value={form.name}
-          onChange={handleChange}
-          className="w-full border-2 border-gray-300 rounded-lg p-3 mb-4"
-          required
-        />
+        <label className="block font-bold mb-2">
+          Nova senha
+        </label>
 
-        <label className="block font-bold mb-2">E-mail</label>
-        <input
-          name="email"
-          type="email"
-          value={form.email}
-          onChange={handleChange}
-          className="w-full border-2 border-gray-300 rounded-lg p-3 mb-4"
-          required
-        />
-
-        <label className="block font-bold mb-2">Senha</label>
         <div className="relative mb-4">
           <input
             name="password"
@@ -153,7 +158,10 @@ export default function Cadastro() {
           </button>
         </div>
 
-        <label className="block font-bold mb-2">Confirmar senha</label>
+        <label className="block font-bold mb-2">
+          Confirmar nova senha
+        </label>
+
         <div className="relative mb-4">
           <input
             name="confirmPassword"
@@ -188,13 +196,12 @@ export default function Cadastro() {
           type="submit"
           className="w-full bg-blue-300 text-gray-800 font-bold py-3 rounded-lg"
         >
-          Cadastrar
+          Alterar senha
         </button>
 
         <p className="mt-4 text-center">
-          Já tem conta?{" "}
           <Link to="/login" className="font-bold text-blue-700">
-            Entrar
+            Voltar para o login
           </Link>
         </p>
       </form>

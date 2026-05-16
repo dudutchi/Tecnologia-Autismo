@@ -4,7 +4,9 @@ import {
   register,
   login,
   me,
-  logout
+  logout,
+  forgotPassword,
+  resetPassword
 } from "../controllers/authController.js";
 import { authMiddleware } from "../middlewares/authMiddleware.js";
 import { validate } from "../middlewares/validate.js";
@@ -37,5 +39,27 @@ router.post(
 router.get("/me", authMiddleware, me);
 
 router.post("/logout", authMiddleware, logout);
+
+router.post(
+  "/forgot-password",
+  [
+    body("email")
+      .isEmail()
+      .withMessage("E-mail inválido")
+  ],
+  validate,
+  forgotPassword
+);
+
+router.post(
+  "/reset-password/:token",
+  [
+    body("password")
+      .isLength({ min: 6 })
+      .withMessage("A senha precisa ter pelo menos 6 caracteres")
+  ],
+  validate,
+  resetPassword
+);
 
 export default router;

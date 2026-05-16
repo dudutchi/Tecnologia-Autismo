@@ -1,0 +1,15 @@
+info:
+  name: Reset de senha
+  type: http
+  seq: 9
+
+http:
+  method: POST
+  url: "{{baseUrl}}/auth/reset-password/http://localhost:5173/redefinir-senha/f8e506d6f60347f4fc0c7476af494798c4d0d767fb897c704711d2d250ac112b"
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

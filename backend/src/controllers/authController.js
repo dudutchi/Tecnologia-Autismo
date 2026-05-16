@@ -1,6 +1,8 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import User from "../models/User.js";
+import crypto from "crypto";
+import { sendResetEmail } from "../services/emailService.js";
 
 function createToken(userId) {
   return jwt.sign(
@@ -110,5 +112,64 @@ export async function logout(req, res) {
 
   return res.json({
     message: "Logout realizado com sucesso"
+  });
+}
+
+export async function forgotPassword(req, res) {
+  const { email } = req.body;
+
+  const user = await User.findOne({ email });
+
+  if (user) {
+    const resetToken = crypto.randomBytes(32).toString("hex");
+
+    const hashedToken = crypto
+      .createHash("sha256")
+      .update(resetToken)
+      .digest("hex");
+
+    user.passwordResetToken = hashedToken;
+    user.passwordResetExpires = Date.now() + 10 * 60 * 1000;
+
+    await user.save({ validateBeforeSave: false });
+
+    const resetUrl = `${process.env.FRONTEND_URL}/redefinir-senha/${resetToken}`;
+
+    await sendResetEmail(user.email, resetUrl);
+  }
+
+  return res.json({
+    message: "Se o e-mail existir, enviaremos um link de recuperação"
+  });
+}
+
+export async function resetPassword(req, res) {
+  const { token } = req.params;
+  const { password } = req.body;
+
+  const hashedToken = crypto
+    .createHash("sha256")
+    .update(token)
+    .digest("hex");
+
+  const user = await User.findOne({
+    passwordResetToken: hashedToken,
+    passwordResetExpires: { $gt: Date.now() }
+  }).select("+password");
+
+  if (!user) {
+    return res.status(400).json({
+      message: "Link inválido ou expirado"
+    });
+  }
+
+  user.password = await bcrypt.hash(password, 12);
+  user.passwordResetToken = undefined;
+  user.passwordResetExpires = undefined;
+
+  await user.save();
+
+  return res.json({
+    message: "Senha alterada com sucesso"
   });
 }
