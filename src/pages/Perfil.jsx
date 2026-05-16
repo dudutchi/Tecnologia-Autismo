@@ -2,7 +2,16 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 
+import PageContainer from "../components/ui/PageContainer";
+import PageHeader from "../components/ui/PageHeader";
+import Card from "../components/ui/Card";
+import Button from "../components/ui/Button";
+import Input from "../components/ui/Input";
+import PasswordInput from "../components/ui/PasswordInput";
+import FeedbackMessage from "../components/ui/FeedbackMessage";
+
 export default function Perfil() {
+  const navigate = useNavigate();
   const { user, updateProfile, changePassword, deleteProfile } = useAuth();
 
   const [profileForm, setProfileForm] = useState({
@@ -15,14 +24,13 @@ export default function Perfil() {
     newPassword: ""
   });
 
-  const [profileMessage, setProfileMessage] = useState("");
-  const [passwordMessage, setPasswordMessage] = useState("");
-  const [error, setError] = useState("");
   const [deletePassword, setDeletePassword] = useState("");
   const [showDeleteBox, setShowDeleteBox] = useState(false);
-  const [deleteError, setDeleteError] = useState("");
 
-  const navigate = useNavigate();
+  const [profileMessage, setProfileMessage] = useState("");
+  const [passwordMessage, setPasswordMessage] = useState("");
+  const [deleteError, setDeleteError] = useState("");
+  const [error, setError] = useState("");
 
   function handleProfileChange(event) {
     setProfileForm({
@@ -46,7 +54,6 @@ export default function Perfil() {
 
     try {
       const response = await updateProfile(profileForm);
-
       setProfileMessage(response.message);
     } catch (error) {
       setError(
@@ -84,50 +91,33 @@ export default function Perfil() {
     setError("");
 
     try {
-        await deleteProfile(deletePassword);
-
-        navigate("/login");
+      await deleteProfile(deletePassword);
+      navigate("/login");
     } catch (error) {
-        setDeleteError(
+      setDeleteError(
         error.response?.data?.message || "Erro ao excluir perfil"
-        );
+      );
     }
-  } 
+  }
 
   return (
-    <main className="min-h-screen bg-gray-50 p-6">
-      <header className="bg-white rounded-2xl shadow p-6 mb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-800">
-            Meu perfil
-          </h1>
+    <PageContainer variant="gray">
+      <PageHeader
+        title="Meu perfil"
+        description="Veja e altere seus dados de acesso com segurança."
+      >
+        <Link
+          to="/"
+          className="bg-blue-100 text-gray-800 font-bold px-5 py-3 rounded-lg hover:bg-blue-200 text-center"
+        >
+          Página inicial
+        </Link>
+      </PageHeader>
 
-          <p className="text-gray-600">
-            Gerencie seus dados de acesso
-          </p>
-        </div>
-
-        <div className="flex gap-3">
-          <Link
-            to="/"
-            className="bg-blue-100 text-gray-800 font-bold px-4 py-3 rounded-lg"
-          >
-            Página inicial
-          </Link>
-        </div>
-      </header>
-
-      {error && (
-        <p className="bg-red-100 text-red-700 p-4 rounded-xl mb-6 font-bold">
-          {error}
-        </p>
-      )}
+      <FeedbackMessage type="error" message={error} />
 
       <section className="grid lg:grid-cols-2 gap-6">
-        <form
-          onSubmit={handleUpdateProfile}
-          className="bg-white rounded-2xl shadow p-6"
-        >
+        <Card>
           <div className="flex items-center gap-4 mb-6">
             <div className="w-20 h-20 rounded-full bg-blue-100 text-gray-800 font-bold text-3xl flex items-center justify-center">
               {user?.name?.charAt(0)?.toUpperCase() || "U"}
@@ -139,168 +129,129 @@ export default function Perfil() {
               </h2>
 
               <p className="text-gray-600">
-                Altere seu nome e e-mail
+                Altere seu nome e e-mail.
               </p>
             </div>
           </div>
 
-          {profileMessage && (
-            <p className="bg-green-100 text-green-700 p-3 rounded-lg mb-4">
-              {profileMessage}
-            </p>
-          )}
+          <FeedbackMessage type="success" message={profileMessage} />
 
-          <label className="block font-bold mb-2">
-            Nome
-          </label>
-          <input
-            name="name"
-            value={profileForm.name}
-            onChange={handleProfileChange}
-            className="w-full border-2 border-gray-300 rounded-lg p-3 mb-4"
-            required
-          />
+          <form onSubmit={handleUpdateProfile}>
+            <Input
+              label="Nome"
+              name="name"
+              value={profileForm.name}
+              onChange={handleProfileChange}
+              required
+            />
 
-          <label className="block font-bold mb-2">
-            E-mail
-          </label>
-          <input
-            name="email"
-            type="email"
-            value={profileForm.email}
-            onChange={handleProfileChange}
-            className="w-full border-2 border-gray-300 rounded-lg p-3 mb-4"
-            required
-          />
+            <Input
+              label="E-mail"
+              name="email"
+              type="email"
+              value={profileForm.email}
+              onChange={handleProfileChange}
+              required
+            />
 
-          <button
-            type="submit"
-            className="w-full bg-blue-300 text-gray-800 font-bold py-3 rounded-lg"
-          >
-            Salvar dados
-          </button>
-        </form>
+            <Button type="submit" className="w-full sm:w-full">
+              Salvar dados
+            </Button>
+          </form>
+        </Card>
 
-        <form
-          onSubmit={handleChangePassword}
-          className="bg-white rounded-2xl shadow p-6"
-        >
+        <Card>
           <h2 className="text-2xl font-bold text-gray-800 mb-2">
             Alterar senha
           </h2>
 
           <p className="text-gray-600 mb-6">
-            Informe sua senha atual e a nova senha
+            Informe sua senha atual e escolha uma nova senha.
           </p>
 
-          {passwordMessage && (
-            <p className="bg-green-100 text-green-700 p-3 rounded-lg mb-4">
-              {passwordMessage}
-            </p>
-          )}
+          <FeedbackMessage type="success" message={passwordMessage} />
 
-          <label className="block font-bold mb-2">
-            Senha atual
-          </label>
-          <input
-            name="currentPassword"
-            type="password"
-            value={passwordForm.currentPassword}
-            onChange={handlePasswordChange}
-            className="w-full border-2 border-gray-300 rounded-lg p-3 mb-4"
-            required
-          />
+          <form onSubmit={handleChangePassword}>
+            <PasswordInput
+              label="Senha atual"
+              name="currentPassword"
+              value={passwordForm.currentPassword}
+              onChange={handlePasswordChange}
+              required
+            />
 
-          <label className="block font-bold mb-2">
-            Nova senha
-          </label>
-          <input
-            name="newPassword"
-            type="password"
-            value={passwordForm.newPassword}
-            onChange={handlePasswordChange}
-            className="w-full border-2 border-gray-300 rounded-lg p-3 mb-4"
-            minLength="6"
-            required
-          />
+            <PasswordInput
+              label="Nova senha"
+              name="newPassword"
+              value={passwordForm.newPassword}
+              onChange={handlePasswordChange}
+              required
+            />
 
-          <button
-            type="submit"
-            className="w-full bg-green-400 text-gray-800 font-bold py-3 rounded-lg"
-          >
-            Alterar senha
-          </button>
-        </form>
+            <Button type="submit" className="w-full sm:w-full">
+              Alterar senha
+            </Button>
+          </form>
+        </Card>
       </section>
 
-      <section className="bg-white rounded-2xl shadow p-6 mt-6 border-2 border-red-100">
+      <Card className="mt-6 border-2 border-red-100">
         <h2 className="text-2xl font-bold text-red-700 mb-2">
-            Excluir perfil
+          Excluir perfil
         </h2>
 
         <p className="text-gray-700 mb-4">
-            Ao excluir seu perfil, sua conta e todos os seus lembretes serão apagados.
-            Essa ação não poderá ser desfeita.
+          Ao excluir seu perfil, sua conta e todos os seus lembretes serão
+          apagados. Essa ação não poderá ser desfeita.
         </p>
 
         {!showDeleteBox ? (
-            <button
+          <Button
             type="button"
+            variant="danger"
             onClick={() => setShowDeleteBox(true)}
-            className="bg-red-100 text-red-700 font-bold px-4 py-3 rounded-lg hover:bg-red-200"
-            >
+          >
             Excluir minha conta
-            </button>
+          </Button>
         ) : (
-            <form
+          <form
             onSubmit={handleDeleteProfile}
             className="bg-red-50 border-2 border-red-100 rounded-xl p-4 mt-4"
-            >
+          >
             <p className="font-bold text-red-700 mb-4">
-                Confirme sua senha para excluir definitivamente sua conta.
+              Confirme sua senha para excluir definitivamente sua conta.
             </p>
 
-            {deleteError && (
-                <p className="bg-red-100 text-red-700 p-3 rounded-lg mb-4">
-                {deleteError}
-                </p>
-            )}
+            <FeedbackMessage type="error" message={deleteError} />
 
-            <label className="block font-bold mb-2">
-                Senha atual
-            </label>
-
-            <input
-                type="password"
-                value={deletePassword}
-                onChange={(event) => setDeletePassword(event.target.value)}
-                className="w-full border-2 border-gray-300 rounded-lg p-3 mb-4"
-                required
+            <PasswordInput
+              label="Senha atual"
+              name="deletePassword"
+              value={deletePassword}
+              onChange={(event) => setDeletePassword(event.target.value)}
+              required
             />
 
             <div className="flex flex-col sm:flex-row gap-3">
-                <button
+              <Button
                 type="button"
+                variant="neutral"
                 onClick={() => {
-                    setShowDeleteBox(false);
-                    setDeletePassword("");
-                    setDeleteError("");
+                  setShowDeleteBox(false);
+                  setDeletePassword("");
+                  setDeleteError("");
                 }}
-                className="bg-gray-200 text-gray-800 font-bold px-4 py-3 rounded-lg"
-                >
+              >
                 Cancelar
-                </button>
+              </Button>
 
-                <button
-                type="submit"
-                className="bg-red-600 text-white font-bold px-4 py-3 rounded-lg hover:bg-red-700"
-                >
+              <Button type="submit" variant="dangerSolid">
                 Sim, excluir definitivamente
-                </button>
+              </Button>
             </div>
-            </form>
+          </form>
         )}
-    </section>
-    </main>
+      </Card>
+    </PageContainer>
   );
 }

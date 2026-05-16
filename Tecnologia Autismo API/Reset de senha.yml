@@ -5,7 +5,13 @@ info:
 
 http:
   method: POST
-  url: "{{baseUrl}}/auth/reset-password/http://localhost:5173/redefinir-senha/f8e506d6f60347f4fc0c7476af494798c4d0d767fb897c704711d2d250ac112b"
+  url: "{{baseUrl}}/auth/reset-password/f8e506d6f60347f4fc0c7476af494798c4d0d767fb897c704711d2d250ac112b"
+  body:
+    type: json
+    data: |-
+      {
+        "password": "novaSenha123"
+      }
   auth: inherit
 
 settings:

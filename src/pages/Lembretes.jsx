@@ -3,6 +3,13 @@ import { Link, useNavigate } from "react-router-dom";
 import api from "../services/api";
 import { useAuth } from "../contexts/AuthContext";
 
+import PageContainer from "../components/ui/PageContainer";
+import PageHeader from "../components/ui/PageHeader";
+import Card from "../components/ui/Card";
+import Button from "../components/ui/Button";
+import Input from "../components/ui/Input";
+import FeedbackMessage from "../components/ui/FeedbackMessage";
+
 const emptyForm = {
   title: "",
   description: "",
@@ -19,7 +26,6 @@ export default function Lembretes() {
   const [form, setForm] = useState(emptyForm);
   const [editingId, setEditingId] = useState(null);
   const [error, setError] = useState("");
-
   const [reminderToDelete, setReminderToDelete] = useState(null);
 
   async function loadReminders() {
@@ -69,227 +75,236 @@ export default function Lembretes() {
     });
   }
 
- function handleDelete(reminder) {
-   setReminderToDelete(reminder);
-}
+  function handleDelete(reminder) {
+    setReminderToDelete(reminder);
+  }
 
-async function confirmDeleteReminder() {
+  async function confirmDeleteReminder() {
     if (!reminderToDelete) return;
 
     await api.delete(`/lembretes/${reminderToDelete._id}`);
 
     setReminderToDelete(null);
     loadReminders();
-}
+  }
 
   async function handleLogout() {
     await logout();
     navigate("/login");
   }
 
-return (
-    <main className="min-h-screen bg-gray-50 p-6">
-        <header className="bg-white rounded-2xl shadow p-6 mb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-        <div>
-            <h1 className="text-3xl font-bold text-gray-800">
-            Meus lembretes
-            </h1>
-
-            <p className="text-gray-600">
-            Aqui estão os seus lembretes, {user?.name}! <br />
-            Você pode adicionar novos lembretes, editar ou excluir os existentes. <br />
-            Use o formulário abaixo para gerenciar seus lembretes e mantenha-se organizado!
-            </p>
-        </div>
-
-        <div className="flex gap-3">
-            <Link
-            to="/"
-            className="bg-blue-100 text-gray-800 font-bold px-4 py-3 rounded-lg"
-            >
-            Página inicial
-            </Link>
-
-        </div>
-        </header>
-
-        <section className="grid lg:grid-cols-2 gap-6">
-        <form
-            onSubmit={handleSubmit}
-            className="bg-white rounded-2xl shadow p-6"
+  return (
+    <PageContainer variant="gray">
+      <PageHeader
+        title="Meus lembretes"
+        description={`Organize sua rotina de forma simples, ${user?.name || ""}!`}
+      >
+        <Link
+          to="/"
+          className="bg-blue-100 text-gray-800 font-bold px-5 py-3 rounded-lg hover:bg-blue-200 text-center"
         >
-            <h2 className="text-2xl font-bold mb-4">
-            {editingId ? "Editar lembrete" : "Adicionar lembrete"}
+          Página inicial
+        </Link>
+      </PageHeader>
+
+      <section className="grid lg:grid-cols-2 gap-6">
+        <Card>
+          <form onSubmit={handleSubmit}>
+            <h2 className="text-2xl font-bold text-gray-800 mb-2">
+              {editingId ? "Editar lembrete" : "Adicionar lembrete"}
             </h2>
 
-            {error && (
-            <p className="bg-red-100 text-red-700 p-3 rounded-lg mb-4">
-                {error}
+            <p className="text-gray-600 mb-6">
+              Preencha as informações abaixo para lembrar de algo importante.
             </p>
-            )}
 
-            <label className="block font-bold mb-2">Título</label>
-            <input
-            name="title"
-            value={form.title}
-            onChange={handleChange}
-            className="w-full border-2 border-gray-300 rounded-lg p-3 mb-4"
-            required
+            <FeedbackMessage type="error" message={error} />
+
+            <Input
+              label="Título"
+              name="title"
+              value={form.title}
+              onChange={handleChange}
+              required
             />
 
-            <label className="block font-bold mb-2">Descrição</label>
-            <textarea
-            name="description"
-            value={form.description}
-            onChange={handleChange}
-            className="w-full border-2 border-gray-300 rounded-lg p-3 mb-4"
-            rows="4"
+            <div className="mb-4">
+              <label className="block font-bold text-gray-800 mb-2">
+                Descrição
+              </label>
+
+              <textarea
+                name="description"
+                value={form.description}
+                onChange={handleChange}
+                className="w-full border-2 border-gray-300 rounded-lg p-3 text-gray-800 focus:outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-100"
+                rows="4"
+                placeholder="Exemplo: tomar remédio depois do almoço"
+              />
+            </div>
+
+            <Input
+              label="Data"
+              name="date"
+              type="date"
+              value={form.date}
+              onChange={handleChange}
+              required
             />
 
-            <label className="block font-bold mb-2">Data</label>
-            <input
-            name="date"
-            type="date"
-            value={form.date}
-            onChange={handleChange}
-            className="w-full border-2 border-gray-300 rounded-lg p-3 mb-4"
-            required
+            <Input
+              label="Horário"
+              name="time"
+              type="time"
+              value={form.time}
+              onChange={handleChange}
+              required
             />
 
-            <label className="block font-bold mb-2">Horário</label>
-            <input
-            name="time"
-            type="time"
-            value={form.time}
-            onChange={handleChange}
-            className="w-full border-2 border-gray-300 rounded-lg p-3 mb-4"
-            required
-            />
+            <div className="mb-4">
+              <label className="block font-bold text-gray-800 mb-2">
+                Status
+              </label>
 
-            <label className="block font-bold mb-2">Status</label>
-            <select
-            name="status"
-            value={form.status}
-            onChange={handleChange}
-            className="w-full border-2 border-gray-300 rounded-lg p-3 mb-4"
-            >
-            <option value="pendente">Pendente</option>
-            <option value="concluido">Concluído</option>
-            </select>
+              <select
+                name="status"
+                value={form.status}
+                onChange={handleChange}
+                className="w-full border-2 border-gray-300 rounded-lg p-3 text-gray-800 focus:outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-100"
+              >
+                <option value="pendente">Pendente</option>
+                <option value="concluido">Concluído</option>
+              </select>
+            </div>
 
-            <button
-            type="submit"
-            className="w-full bg-green-400 text-gray-800 font-bold py-3 rounded-lg"
-            >
-            {editingId ? "Salvar alterações" : "Adicionar lembrete"}
-            </button>
+            <Button type="submit" className="w-full sm:w-full">
+              {editingId ? "Salvar alterações" : "Adicionar lembrete"}
+            </Button>
 
             {editingId && (
-            <button
+              <Button
                 type="button"
+                variant="neutral"
+                className="w-full sm:w-full mt-3"
                 onClick={() => {
-                setEditingId(null);
-                setForm(emptyForm);
+                  setEditingId(null);
+                  setForm(emptyForm);
                 }}
-                className="w-full bg-gray-200 text-gray-800 font-bold py-3 rounded-lg mt-3"
-            >
+              >
                 Cancelar edição
-            </button>
+              </Button>
             )}
-        </form>
+          </form>
+        </Card>
 
-        <div className="bg-white rounded-2xl shadow p-6">
-            <h2 className="text-2xl font-bold mb-4">
+        <Card>
+          <h2 className="text-2xl font-bold text-gray-800 mb-2">
             Lembretes cadastrados
-            </h2>
+          </h2>
 
-            {reminders.length === 0 && (
-            <p className="text-gray-600">
+          <p className="text-gray-600 mb-6">
+            Aqui aparecem somente os lembretes da sua conta.
+          </p>
+
+          {reminders.length === 0 && (
+            <div className="bg-blue-50 border-2 border-blue-100 rounded-xl p-4">
+              <p className="text-gray-700 font-bold">
                 Nenhum lembrete cadastrado ainda.
-            </p>
-            )}
+              </p>
 
-            <div className="flex flex-col gap-4">
+              <p className="text-gray-600 mt-1">
+                Use o formulário ao lado para criar seu primeiro lembrete.
+              </p>
+            </div>
+          )}
+
+          <div className="flex flex-col gap-4">
             {reminders.map((reminder) => (
-                <article
+              <article
                 key={reminder._id}
                 className="border-2 border-blue-100 rounded-xl p-4 bg-blue-50"
-                >
+              >
                 <h3 className="text-xl font-bold text-gray-800">
-                    {reminder.title}
+                  {reminder.title}
                 </h3>
 
-                <p className="text-gray-700">
+                {reminder.description && (
+                  <p className="text-gray-700 mt-1">
                     {reminder.description}
-                </p>
+                  </p>
+                )}
 
-                <p className="font-bold mt-2">
+                <div className="mt-3 bg-white rounded-lg p-3">
+                  <p className="font-bold text-gray-800">
                     Data: {reminder.date} às {reminder.time}
-                </p>
+                  </p>
 
-                <p>
+                  <p className="text-gray-700">
                     Status:{" "}
                     <span className="font-bold">
-                    {reminder.status}
+                      {reminder.status}
                     </span>
-                </p>
-
-                <div className="flex gap-3 mt-4">
-                    <button
-                    onClick={() => handleEdit(reminder)}
-                    className="bg-yellow-100 text-yellow-800 font-bold px-4 py-2 rounded-lg"
-                    >
-                    Editar
-                    </button>
-
-                    <button
-                    onClick={() => handleDelete(reminder)}
-                    className="bg-red-100 text-red-700 font-bold px-4 py-2 rounded-lg"
-                    >
-                    Excluir
-                    </button>
+                  </p>
                 </div>
-                </article>
-            ))}
-            </div>
-        </div>
-        </section>
 
-        {reminderToDelete && (
+                <div className="flex flex-col sm:flex-row gap-3 mt-4">
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    onClick={() => handleEdit(reminder)}
+                  >
+                    Editar
+                  </Button>
+
+                  <Button
+                    type="button"
+                    variant="danger"
+                    onClick={() => handleDelete(reminder)}
+                  >
+                    Excluir
+                  </Button>
+                </div>
+              </article>
+            ))}
+          </div>
+        </Card>
+      </section>
+
+      {reminderToDelete && (
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 px-4">
-            <div className="bg-white rounded-2xl shadow-xl p-6 w-full max-w-md">
+          <Card className="w-full max-w-md p-6">
             <h2 className="text-2xl font-bold text-gray-800 mb-3">
-                Excluir lembrete?
+              Excluir lembrete?
             </h2>
 
             <p className="text-gray-700 mb-2">
-                Você tem certeza que deseja excluir este lembrete?
+              Você tem certeza que deseja excluir este lembrete?
             </p>
 
-            <p className="font-bold text-gray-800 mb-6">
-                {reminderToDelete.title}
+            <p className="font-bold text-gray-800 bg-red-50 border-2 border-red-100 rounded-lg p-3 mb-6">
+              {reminderToDelete.title}
             </p>
 
-            <div className="flex gap-3 justify-end">
-                <button
+            <div className="flex flex-col sm:flex-row gap-3 justify-end">
+              <Button
                 type="button"
+                variant="neutral"
                 onClick={() => setReminderToDelete(null)}
-                className="bg-gray-200 text-gray-800 font-bold px-4 py-2 rounded-lg"
-                >
+              >
                 Cancelar
-                </button>
+              </Button>
 
-                <button
+              <Button
                 type="button"
+                variant="dangerSolid"
                 onClick={confirmDeleteReminder}
-                className="bg-red-500 text-white font-bold px-4 py-2 rounded-lg"
-                >
+              >
                 Sim, excluir
-                </button>
+              </Button>
             </div>
-            </div>
+          </Card>
         </div>
-        )}
-    </main>
-);
+      )}
+    </PageContainer>
+  );
 }

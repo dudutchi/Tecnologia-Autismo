@@ -1,59 +1,12 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
-function EyeIcon() {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      className="w-6 h-6"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-      strokeWidth="2"
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M2.25 12s3.75-6.75 9.75-6.75S21.75 12 21.75 12s-3.75 6.75-9.75 6.75S2.25 12 2.25 12z"
-      />
-      <circle cx="12" cy="12" r="3" />
-    </svg>
-  );
-}
 
-function EyeOffIcon() {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      className="w-6 h-6"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-      strokeWidth="2"
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M3 3l18 18"
-      />
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M10.58 10.58A2 2 0 0012 14a2 2 0 001.42-.58"
-      />
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M9.88 5.25A10.66 10.66 0 0112 5.03c6 0 9.75 6.97 9.75 6.97a18.18 18.18 0 01-3.03 3.82"
-      />
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M6.11 6.11C3.6 7.85 2.25 12 2.25 12s3.75 6.97 9.75 6.97c1.45 0 2.78-.36 3.94-.94"
-      />
-    </svg>
-  );
-}
+import Card from "../components/ui/Card";
+import Input from "../components/ui/Input";
+import Button from "../components/ui/Button";
+import PasswordInput from "../components/ui/PasswordInput";
+import FeedbackMessage from "../components/ui/FeedbackMessage";
 
 export default function Cadastro() {
   const navigate = useNavigate();
@@ -65,9 +18,6 @@ export default function Cadastro() {
     password: "",
     confirmPassword: ""
   });
-
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const [error, setError] = useState("");
 
@@ -97,107 +47,63 @@ export default function Cadastro() {
 
   return (
     <main className="min-h-screen flex items-center justify-center bg-green-50 px-4">
-      <form
-        onSubmit={handleSubmit}
-        className="bg-white w-full max-w-md p-8 rounded-2xl shadow-lg"
-      >
-        <h1 className="text-3xl font-bold text-gray-800 mb-6">
-          Criar conta
-        </h1>
+      <Card className="w-full max-w-md p-8">
+        <form onSubmit={handleSubmit}>
+          <h1 className="text-3xl font-bold text-gray-800 mb-2">
+            Criar conta
+          </h1>
 
-        {error && (
-          <p className="bg-red-100 text-red-700 p-3 rounded-lg mb-4">
-            {error}
+          <p className="text-gray-600 mb-6">
+            Preencha os dados abaixo para acessar o sistema.
           </p>
-        )}
 
-        <label className="block font-bold mb-2">Nome</label>
-        <input
-          name="name"
-          value={form.name}
-          onChange={handleChange}
-          className="w-full border-2 border-gray-300 rounded-lg p-3 mb-4"
-          required
-        />
+          <FeedbackMessage type="error" message={error} />
 
-        <label className="block font-bold mb-2">E-mail</label>
-        <input
-          name="email"
-          type="email"
-          value={form.email}
-          onChange={handleChange}
-          className="w-full border-2 border-gray-300 rounded-lg p-3 mb-4"
-          required
-        />
+          <Input
+            label="Nome"
+            name="name"
+            value={form.name}
+            onChange={handleChange}
+            required
+          />
 
-        <label className="block font-bold mb-2">Senha</label>
-        <div className="relative mb-4">
-          <input
+          <Input
+            label="E-mail"
+            name="email"
+            type="email"
+            value={form.email}
+            onChange={handleChange}
+            required
+          />
+
+          <PasswordInput
+            label="Senha"
             name="password"
-            type={showPassword ? "text" : "password"}
             value={form.password}
             onChange={handleChange}
-            className="w-full border-2 border-gray-300 rounded-lg p-3 pr-14"
-            minLength="6"
             required
           />
 
-          <button
-            type="button"
-            onClick={() => setShowPassword(!showPassword)}
-            className="absolute right-3 inset-y-0 flex items-center justify-center text-gray-500 hover:text-gray-800"
-            aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}
-            title={showPassword ? "Ocultar senha" : "Mostrar senha"}
-          >
-            {showPassword ? <EyeIcon /> : <EyeOffIcon />}
-          </button>
-        </div>
-
-        <label className="block font-bold mb-2">Confirmar senha</label>
-        <div className="relative mb-4">
-          <input
+          <PasswordInput
+            label="Confirmar senha"
             name="confirmPassword"
-            type={showConfirmPassword ? "text" : "password"}
             value={form.confirmPassword}
             onChange={handleChange}
-            className="w-full border-2 border-gray-300 rounded-lg p-3 pr-14"
-            minLength="6"
             required
           />
 
-          <button
-            type="button"
-            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-            className="absolute right-3 inset-y-0 flex items-center justify-center text-gray-500 hover:text-gray-800"
-            aria-label={
-              showConfirmPassword
-                ? "Ocultar confirmação de senha"
-                : "Mostrar confirmação de senha"
-            }
-            title={
-              showConfirmPassword
-                ? "Ocultar confirmação de senha"
-                : "Mostrar confirmação de senha"
-            }
-          >
-            {showConfirmPassword ? <EyeIcon /> : <EyeOffIcon />}
-          </button>
-        </div>
+          <Button type="submit" className="w-full">
+            Cadastrar
+          </Button>
 
-        <button
-          type="submit"
-          className="w-full bg-blue-300 text-gray-800 font-bold py-3 rounded-lg"
-        >
-          Cadastrar
-        </button>
-
-        <p className="mt-4 text-center">
-          Já tem conta?{" "}
-          <Link to="/login" className="font-bold text-blue-700">
-            Entrar
-          </Link>
-        </p>
-      </form>
+          <p className="mt-4 text-center text-gray-700">
+            Já tem conta?{" "}
+            <Link to="/login" className="font-bold text-blue-700">
+              Entrar
+            </Link>
+          </p>
+        </form>
+      </Card>
     </main>
   );
 }
