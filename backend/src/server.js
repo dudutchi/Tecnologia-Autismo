@@ -6,6 +6,7 @@ import { connectDB } from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
 import reminderRoutes from "./routes/reminderRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
+import favoriteRoutes from "./routes/favoriteRoutes.js";
 import dns from "dns";
 
 dns.setServers(["8.8.8.8", "1.1.1.1"]);
@@ -27,13 +28,13 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use("/api/auth", authRoutes);
+app.use("/api/favoritos", favoriteRoutes);
 app.use("/api/lembretes", reminderRoutes);
-
 app.use("/api/users", userRoutes);
 
 app.get("/", (req, res) => {
   res.json({
-    message: "Backend do projeto Tecnologia Autismo funcionando!"
+    message: "funcionando"
   });
 });
 

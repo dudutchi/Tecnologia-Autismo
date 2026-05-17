@@ -22,7 +22,12 @@ router.put(
 
     body("email")
       .isEmail()
-      .withMessage("E-mail inválido")
+      .withMessage("E-mail inválido"),
+
+    body("voicePreference")
+      .optional()
+      .isIn(["feminina", "masculina"])
+      .withMessage("Preferência de voz inválida")
   ],
   validate,
   updateProfile

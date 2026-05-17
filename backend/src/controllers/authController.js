@@ -49,10 +49,11 @@ export async function register(req, res) {
   return res.status(201).json({
     message: "Usuário cadastrado com sucesso",
     user: {
-      id: user._id,
-      name: user.name,
-      email: user.email
-    }
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        voicePreference: user.voicePreference || "feminina"
+      }
   });
 }
 
@@ -84,7 +85,8 @@ export async function login(req, res) {
     user: {
       id: user._id,
       name: user.name,
-      email: user.email
+      email: user.email,
+      voicePreference: user.voicePreference || "feminina"
     }
   });
 }
@@ -102,7 +104,8 @@ export async function me(req, res) {
     user: {
       id: user._id,
       name: user.name,
-      email: user.email
+      email: user.email,
+      voicePreference: user.voicePreference || "feminina"
     }
   });
 }

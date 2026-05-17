@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 
@@ -9,6 +9,7 @@ import Button from "../components/ui/Button";
 import Input from "../components/ui/Input";
 import PasswordInput from "../components/ui/PasswordInput";
 import FeedbackMessage from "../components/ui/FeedbackMessage";
+import { falar } from "../utils/falar";
 
 export default function Perfil() {
   const navigate = useNavigate();
@@ -16,7 +17,8 @@ export default function Perfil() {
 
   const [profileForm, setProfileForm] = useState({
     name: user?.name || "",
-    email: user?.email || ""
+    email: user?.email || "",
+    voicePreference: user?.voicePreference || "feminina"
   });
 
   const [passwordForm, setPasswordForm] = useState({
@@ -29,8 +31,17 @@ export default function Perfil() {
 
   const [profileMessage, setProfileMessage] = useState("");
   const [passwordMessage, setPasswordMessage] = useState("");
+  const [voiceMessage, setVoiceMessage] = useState("");
   const [deleteError, setDeleteError] = useState("");
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    setProfileForm({
+      name: user?.name || "",
+      email: user?.email || "",
+      voicePreference: user?.voicePreference || "feminina"
+    });
+  }, [user]);
 
   function handleProfileChange(event) {
     setProfileForm({
@@ -51,6 +62,7 @@ export default function Perfil() {
 
     setError("");
     setProfileMessage("");
+    setVoiceMessage("");
 
     try {
       const response = await updateProfile(profileForm);
@@ -58,6 +70,23 @@ export default function Perfil() {
     } catch (error) {
       setError(
         error.response?.data?.message || "Erro ao atualizar perfil"
+      );
+    }
+  }
+
+  async function handleUpdateVoice(event) {
+    event.preventDefault();
+
+    setError("");
+    setVoiceMessage("");
+    setProfileMessage("");
+
+    try {
+      const response = await updateProfile(profileForm);
+      setVoiceMessage(response.message || "Voz atualizada com sucesso");
+    } catch (error) {
+      setError(
+        error.response?.data?.message || "Erro ao atualizar voz"
       );
     }
   }
@@ -195,14 +224,112 @@ export default function Perfil() {
         </Card>
       </section>
 
+      <Card className="mt-6 border-2 border-yellow-100">
+        <h2 className="text-2xl font-bold text-gray-800 mb-2">
+          Voz da comunicação
+        </h2>
+
+        <p className="text-gray-600 mb-6">
+          Escolha qual voz será usada quando o usuário tocar nas comunicações.
+          Essa preferência ficará salva no perfil.
+        </p>
+
+        <FeedbackMessage type="success" message={voiceMessage} />
+
+        <form onSubmit={handleUpdateVoice}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
+            <label
+              className={`cursor-pointer rounded-xl border-2 p-4 transition-all ${
+                profileForm.voicePreference === "feminina"
+                  ? "border-green-400 bg-green-50"
+                  : "border-gray-200 bg-white hover:bg-gray-50"
+              }`}
+            >
+              <input
+                type="radio"
+                name="voicePreference"
+                value="feminina"
+                checked={profileForm.voicePreference === "feminina"}
+                onChange={handleProfileChange}
+                className="sr-only"
+              />
+
+              <div className="flex items-center gap-3">
+                <span className="text-3xl">👩</span>
+
+                <div>
+                  <p className="font-bold text-gray-800">
+                    Voz feminina
+                  </p>
+
+                  <p className="text-sm text-gray-600">
+                    Usar voz feminina nas comunicações.
+                  </p>
+                </div>
+              </div>
+            </label>
+
+            <label
+              className={`cursor-pointer rounded-xl border-2 p-4 transition-all ${
+                profileForm.voicePreference === "masculina"
+                  ? "border-blue-400 bg-blue-50"
+                  : "border-gray-200 bg-white hover:bg-gray-50"
+              }`}
+            >
+              <input
+                type="radio"
+                name="voicePreference"
+                value="masculina"
+                checked={profileForm.voicePreference === "masculina"}
+                onChange={handleProfileChange}
+                className="sr-only"
+              />
+
+              <div className="flex items-center gap-3">
+                <span className="text-3xl">👨</span>
+
+                <div>
+                  <p className="font-bold text-gray-800">
+                    Voz masculina
+                  </p>
+
+                  <p className="text-sm text-gray-600">
+                    Usar voz masculina nas comunicações.
+                  </p>
+                </div>
+              </div>
+            </label>
+          </div>
+
+          <div className="flex flex-col sm:flex-row gap-3">
+            <button
+              type="button"
+              onClick={() =>
+                falar(
+                  "Olá, esta é a voz escolhida para as comunicações.",
+                  profileForm.voicePreference
+                )
+              }
+              className="bg-blue-100 text-gray-800 font-bold px-5 py-3 rounded-lg hover:bg-blue-200 focus:outline-none focus:ring-4 focus:ring-blue-300"
+            >
+              Testar voz escolhida
+            </button>
+
+            <Button type="submit" className="w-full sm:w-auto">
+              Salvar voz
+            </Button>
+          </div>
+        </form>
+      </Card>
+
       <Card className="mt-6 border-2 border-red-100">
         <h2 className="text-2xl font-bold text-red-700 mb-2">
           Excluir perfil
         </h2>
 
         <p className="text-gray-700 mb-4">
-          Ao excluir seu perfil, sua conta e todos os seus lembretes serão
-          apagados. Essa ação não poderá ser desfeita.
+          Ao excluir seu perfil, sua conta e todos os seus lembretes e favoritos
+          serão apagados. Essa ação não poderá ser desfeita.
         </p>
 
         {!showDeleteBox ? (

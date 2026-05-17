@@ -34,8 +34,8 @@ import sala from "../assets/pranchasModoLivre/Lugares/sala.png"
 
 
 const ComunicacaoGeral = [
-  { titulo: "Ações", imagem: acoes },
-  { titulo: "Interação", imagem: interacao },
+  { titulo: "Ações", imagem: acoes, link: "/acoes" },
+  { titulo: "Interação", imagem: interacao, link: "/interacao" },
   { titulo: "Pessoas", imagem: pessoas },
   { titulo: "Soletrar", imagem: soletrar },
   { titulo: "Palavras Essenciais", imagem: palavras},
@@ -85,7 +85,7 @@ const MenuItems = [
 export default function ModoLivre() {
   return (
     <div className="overflow-x-hidden"> 
-      <FaixaDeModo texto="Ajude-me" cor="#58D68D" />
+      <FaixaDeModo texto="O Que Eu Preciso" cor="#58D68D" />
        <MenuLateralModoLivre items={MenuItems} />
 
       <CategoriaModoLivre

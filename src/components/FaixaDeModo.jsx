@@ -11,16 +11,23 @@ export default function FaixaDeModo({ texto, cor }) {
         {texto}
       </h2>
 
-      <div className="flex items-center gap-4">
-        <Link
-          to="/lembretes"
-          className="bg-white text-gray-800 h-14 px-8 rounded-lg lg:text-lg font-bold hover:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-blue-300 flex items-center justify-center"
-        >
-          Lembretes
-        </Link>
+    <div className="flex items-center gap-4">
+      <Link
+        to="/favoritos"
+        className="bg-yellow-300 text-gray-900 h-14 px-8 rounded-lg lg:text-lg font-bold hover:bg-yellow-400 focus:outline-none focus:ring-4 focus:ring-yellow-200 flex items-center justify-center shadow-sm"
+      >
+        ★ Favoritos
+      </Link>
 
-        <PerfilMenu />
-      </div>
+      <Link
+        to="/lembretes"
+        className="bg-white text-gray-800 h-14 px-8 rounded-lg lg:text-lg font-bold hover:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-blue-300 flex items-center justify-center"
+      >
+        Lembretes
+      </Link>
+
+      <PerfilMenu />
+    </div>
     </div>
   );
 }

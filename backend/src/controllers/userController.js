@@ -1,10 +1,11 @@
 import bcrypt from "bcryptjs";
 import User from "../models/User.js";
 import Reminder from "../models/Reminder.js";
+import Favorite from "../models/Favorite.js";
 
 export async function updateProfile(req, res) {
-  const { name, email } = req.body;
 
+  const { name, email, voicePreference } = req.body;
   const user = await User.findById(req.userId);
 
   if (!user) {
@@ -29,6 +30,10 @@ export async function updateProfile(req, res) {
   user.name = name || user.name;
   user.email = email || user.email;
 
+  if (voicePreference) {
+    user.voicePreference = voicePreference;
+  }
+
   await user.save();
 
   return res.json({
@@ -37,7 +42,8 @@ export async function updateProfile(req, res) {
       id: user._id,
       name: user.name,
       email: user.email,
-      avatarUrl: user.avatarUrl
+      avatarUrl: user.avatarUrl,
+      voicePreference: user.voicePreference || "feminina"
     }
   });
 }
@@ -93,6 +99,10 @@ export async function deleteProfile(req, res) {
   }
 
   await Reminder.deleteMany({
+    user: req.userId
+  });
+
+  await Favorite.deleteMany({
     user: req.userId
   });
 

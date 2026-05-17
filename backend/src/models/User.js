@@ -27,6 +27,12 @@ const userSchema = new mongoose.Schema(
       default: ""
     },
 
+    voicePreference: {
+      type: String,
+      enum: ["feminina", "masculina"],
+      default: "feminina"
+    },
+
     passwordResetToken: String,
 
     passwordResetExpires: Date
