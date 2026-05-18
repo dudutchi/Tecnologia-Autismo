@@ -36,9 +36,9 @@ import sala from "../assets/pranchasModoLivre/Lugares/sala.png"
 const ComunicacaoGeral = [
   { titulo: "Ações", imagem: acoes, link: "/acoes" },
   { titulo: "Interação", imagem: interacao, link: "/interacao" },
-  { titulo: "Pessoas", imagem: pessoas },
-  { titulo: "Soletrar", imagem: soletrar },
-  { titulo: "Palavras Essenciais", imagem: palavras},
+  { titulo: "Pessoas", imagem: pessoas, link: "/pessoas" },
+  { titulo: "Soletrar", imagem: soletrar, link: "/soletrar" },
+  { titulo: "Palavras Essenciais", imagem: palavras, link: "/palavras-essenciais" },
 ];
 
 const Educacao = [

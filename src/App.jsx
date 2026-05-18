@@ -10,6 +10,9 @@ import EsqueciSenha from "./pages/EsqueciSenha";
 import RedefinirSenha from "./pages/RedefinirSenha";
 import Acoes from "./pages/Acoes";
 import Interacao from "./pages/Interacao";
+import Pessoas from "./pages/Pessoas";
+import Soletrar from "./pages/Soletrar";
+import PalavrasEssenciais from "./pages/PalavrasEssenciais";
 import Favoritos from "./pages/Favoritos";
 
 export default function App() {
@@ -63,6 +66,33 @@ export default function App() {
             element={
               <ProtectedRoute>
                 <Interacao />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/pessoas"
+            element={
+              <ProtectedRoute>
+                <Pessoas />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/soletrar"
+            element={
+              <ProtectedRoute>
+                <Soletrar />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/palavras-essenciais"
+            element={
+              <ProtectedRoute>
+                <PalavrasEssenciais />
               </ProtectedRoute>
             }
           />

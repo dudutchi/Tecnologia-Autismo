@@ -10,6 +10,8 @@ import Button from "../components/ui/Button";
 import Input from "../components/ui/Input";
 import FeedbackMessage from "../components/ui/FeedbackMessage";
 
+import { falar } from "../utils/falar";
+
 const emptyForm = {
   title: "",
   description: "",
@@ -17,6 +19,70 @@ const emptyForm = {
   time: "",
   status: "pendente"
 };
+
+function formatarDataParaFala(data) {
+  if (!data) {
+    return "";
+  }
+
+  const dataFormatada = new Date(`${data}T00:00:00`);
+
+  return dataFormatada.toLocaleDateString("pt-BR", {
+    day: "2-digit",
+    month: "long",
+    year: "numeric"
+  });
+}
+
+function formatarHorarioParaFala(horario) {
+  if (!horario) {
+    return "";
+  }
+
+  const [hora, minuto] = horario.split(":");
+
+  if (!hora || !minuto) {
+    return horario;
+  }
+
+  if (minuto === "00") {
+    return `${hora} horas`;
+  }
+
+  return `${hora} horas e ${minuto} minutos`;
+}
+
+function formatarStatusParaFala(status) {
+  if (status === "concluido") {
+    return "concluído";
+  }
+
+  return "pendente";
+}
+
+function montarTextoDoLembrete(lembrete) {
+  const partes = [
+    `Lembrete: ${lembrete.title}.`
+  ];
+
+  if (lembrete.description) {
+    partes.push(`Descrição: ${lembrete.description}.`);
+  }
+
+  if (lembrete.date) {
+    partes.push(`Data: ${formatarDataParaFala(lembrete.date)}.`);
+  }
+
+  if (lembrete.time) {
+    partes.push(`Horário: ${formatarHorarioParaFala(lembrete.time)}.`);
+  }
+
+  if (lembrete.status) {
+    partes.push(`Status: ${formatarStatusParaFala(lembrete.status)}.`);
+  }
+
+  return partes.join(" ");
+}
 
 export default function Lembretes() {
   const navigate = useNavigate();
@@ -77,6 +143,23 @@ export default function Lembretes() {
 
   function handleDelete(reminder) {
     setReminderToDelete(reminder);
+  }
+
+  function reproduzirFormulario() {
+  if (!form.title.trim()) {
+    setError("Preencha o título para reproduzir o lembrete.");
+    return;
+  }
+
+  const textoDoLembrete = montarTextoDoLembrete(form);
+
+  falar(textoDoLembrete, user?.voicePreference);
+  }
+
+  function reproduzirLembrete(reminder) {
+  const textoDoLembrete = montarTextoDoLembrete(reminder);
+
+  falar(textoDoLembrete, user?.voicePreference);
   }
 
   async function confirmDeleteReminder() {
@@ -177,6 +260,15 @@ export default function Lembretes() {
               </select>
             </div>
 
+            <Button
+              type="button"
+              variant="secondary"
+              className="w-full sm:w-full mb-3"
+              onClick={reproduzirFormulario}
+            >
+              🔊 Testar áudio do lembrete
+            </Button>
+
             <Button type="submit" className="w-full sm:w-full">
               {editingId ? "Salvar alterações" : "Adicionar lembrete"}
             </Button>
@@ -248,6 +340,14 @@ export default function Lembretes() {
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-3 mt-4">
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    onClick={() => reproduzirLembrete(reminder)}
+                  >
+                    🔊 Ouvir lembrete
+                  </Button>
+
                   <Button
                     type="button"
                     variant="secondary"
