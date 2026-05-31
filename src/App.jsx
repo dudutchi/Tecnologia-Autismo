@@ -14,11 +14,15 @@ import Pessoas from "./pages/Pessoas";
 import Soletrar from "./pages/Soletrar";
 import PalavrasEssenciais from "./pages/PalavrasEssenciais";
 import Favoritos from "./pages/Favoritos";
+import PranchaModoLivre from "./pages/PranchaModoLivre";
+import ScrollToTop from "./components/ScrollToTop";
 
 export default function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
+        <ScrollToTop />
+
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/cadastro" element={<Cadastro />} />
@@ -102,6 +106,15 @@ export default function App() {
             element={
               <ProtectedRoute>
                 <Perfil />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/modo-livre/:slug"
+            element={
+              <ProtectedRoute>
+                <PranchaModoLivre />
               </ProtectedRoute>
             }
           />

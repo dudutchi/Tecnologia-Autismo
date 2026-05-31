@@ -42,36 +42,36 @@ const ComunicacaoGeral = [
 ];
 
 const Educacao = [
-{ titulo: "Ajuda na Escola", imagem: ajudaEscola},
-{ titulo: "Alfabeto", imagem: alfabeto},
-{ titulo: "Animais", imagem: animais},
-{ titulo: "Espaços da Escola", imagem: espacosEscola},
-{ titulo: "Números", imagem: numeros},
-]
+  { titulo: "Ajuda na Escola", imagem: ajudaEscola, link: "/modo-livre/ajuda-na-escola" },
+  { titulo: "Alfabeto", imagem: alfabeto, link: "/modo-livre/alfabeto" },
+  { titulo: "Animais", imagem: animais, link: "/modo-livre/animais" },
+  { titulo: "Espaços da Escola", imagem: espacosEscola, link: "/modo-livre/espacos-da-escola" },
+  { titulo: "Números", imagem: numeros, link: "/modo-livre/numeros" },
+];
 
 const Alimentacao = [
-{ titulo: "Bebidas", imagem: bebidas},
-{ titulo: "Comidas", imagem: comidas},
-{ titulo: "Frutas", imagem: frutas},
-{ titulo: "Refeições", imagem: refeicoes},
-{ titulo: "Vegetais", imagem: vegetais},
-]
+  { titulo: "Bebidas", imagem: bebidas, link: "/modo-livre/bebidas" },
+  { titulo: "Comidas", imagem: comidas, link: "/modo-livre/comidas" },
+  { titulo: "Frutas", imagem: frutas, link: "/modo-livre/frutas" },
+  { titulo: "Refeições", imagem: refeicoes, link: "/modo-livre/refeicoes" },
+  { titulo: "Vegetais", imagem: vegetais, link: "/modo-livre/vegetais" },
+];
 
 const CorpoSaude = [
-{ titulo: "Nivel de Dor", imagem: nivelDor},
-{ titulo: "Partes do Corpo", imagem: partesCorpo},
-{ titulo: "Profissionais da Saúde", imagem: profissionaisSaude},
-{ titulo: "Saúde", imagem: saude},
-{ titulo: "Sensações", imagem: sensacoes},
-]
+  { titulo: "Nível de Dor", imagem: nivelDor, link: "/modo-livre/nivel-de-dor" },
+  { titulo: "Partes do Corpo", imagem: partesCorpo, link: "/modo-livre/partes-do-corpo" },
+  { titulo: "Profissionais da Saúde", imagem: profissionaisSaude, link: "/modo-livre/profissionais-da-saude" },
+  { titulo: "Saúde", imagem: saude, link: "/modo-livre/saude" },
+  { titulo: "Sensações", imagem: sensacoes, link: "/modo-livre/sensacoes" },
+];
 
 const Lugares = [
-{ titulo: "Banheiro", imagem: banheiro},
-{ titulo: "Cozinha", imagem: cozinha},
-{ titulo: "Estabelecimentos", imagem: estabelecimentos},
-{ titulo: "Quarto", imagem: quarto},
-{ titulo: "Sala", imagem: sala},
-]
+  { titulo: "Banheiro", imagem: banheiro, link: "/modo-livre/banheiro" },
+  { titulo: "Cozinha", imagem: cozinha, link: "/modo-livre/cozinha" },
+  { titulo: "Estabelecimentos", imagem: estabelecimentos, link: "/modo-livre/estabelecimentos" },
+  { titulo: "Quarto", imagem: quarto, link: "/modo-livre/quarto" },
+  { titulo: "Sala", imagem: sala, link: "/modo-livre/sala" },
+];
 
 const MenuItems = [
   { label: "Comunicação Geral", href: "#comunicacao-geral" },
